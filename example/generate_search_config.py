@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Generate a Stork config.toml indexing every Markdown/reST file under content/."""
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -20,8 +21,16 @@ def parse_args() -> argparse.Namespace:
         nargs="?",
         type=Path,
         default=DEFAULT_CONTENT_DIR,
-        help="directory to scan for Markdown/reST files and write config.toml "
-        f"into (default: {DEFAULT_CONTENT_DIR})",
+        help="directory to scan for Markdown/reST files (default: "
+        f"{DEFAULT_CONTENT_DIR})",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-dir",
+        dest="output_dir",
+        type=Path,
+        default=None,
+        help="directory to write config.toml into (default: content_dir)",
     )
     return parser.parse_args()
 
@@ -52,6 +61,7 @@ def toml_escape(value: str) -> str:
 def main() -> None:
     args = parse_args()
     content_dir = args.content_dir
+    output_dir = args.output_dir if args.output_dir is not None else content_dir
 
     entries = []
     for path in sorted(content_dir.rglob("*")):
@@ -66,7 +76,11 @@ def main() -> None:
         print(f"No Markdown/reST files found under {content_dir}", file=sys.stderr)
         sys.exit(1)
 
-    lines = ['[input]', 'base_directory = "."', ""]
+    # relative to output_dir, so Stork can still find the indexed files even
+    # when config.toml is written somewhere other than content_dir
+    base_directory = os.path.relpath(content_dir, start=output_dir)
+
+    lines = ['[input]', f'base_directory = "{toml_escape(base_directory)}"', ""]
     for path, url, title in entries:
         filetype = "Markdown" if path.lower().endswith(".md") else "PlainText"
         lines.append("[[input.files]]")
@@ -76,8 +90,10 @@ def main() -> None:
         lines.append(f'filetype = "{filetype}"')
         lines.append("")
 
-    (content_dir / "config.toml").write_text("\n".join(lines), encoding="utf-8")
-    print(f"Wrote config.toml with {len(entries)} entries")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_path = output_dir / "config.toml"
+    output_path.write_text("\n".join(lines), encoding="utf-8")
+    print(f"Wrote {output_path} with {len(entries)} entries")
 
 
 if __name__ == "__main__":

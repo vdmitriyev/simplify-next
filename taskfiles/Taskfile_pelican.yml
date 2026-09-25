@@ -58,8 +58,9 @@ tasks:
       DOCKER_STORK_DIR: docker/stork
       SEARCH_CONFIG_SCRIPT: example/generate_search_config.py
       SEARCH_CONTENT_DIR: example/content
+      SEARCH_OUTPUT_DIR: example/content
     cmds:
-      - python {{.SEARCH_CONFIG_SCRIPT}} {{.SEARCH_CONTENT_DIR}}
+      - python {{.SEARCH_CONFIG_SCRIPT}} {{.SEARCH_CONTENT_DIR}} --output-dir {{.SEARCH_OUTPUT_DIR}}
       - docker build -t simplify-next-stork:1.6.0 -f {{.DOCKER_STORK_DIR}}/Dockerfile {{.DOCKER_STORK_DIR}}
       - docker run --rm -v "$(pwd)/{{.SEARCH_CONTENT_DIR}}":/files simplify-next-stork:1.6.0 build --input config.toml --output search-index.st
 

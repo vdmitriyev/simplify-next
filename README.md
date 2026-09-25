@@ -62,7 +62,7 @@ The list of necessary plugins is now in the `requirements.txt` file, and enabled
 - [related_posts](https://github.com/getpelican/pelican-plugins/tree/master/related_posts): find relate posts to the reading article
 - [neighbors](https://github.com/getpelican/pelican-plugins/tree/master/neighbors): find next/preivious article
 - [share_post](https://github.com/getpelican/pelican-plugins/tree/master/share_post): share article via static buttons (Twitter, LinkedIn)
-- [search](https://github.com/pelican-plugins/search): generate a [Stork](https://stork-search.net/) search index for the Quick Search feature; requires the `stork` CLI binary to be installed and on `$PATH` before running `task build`/`task serve` (see [Stork install instructions](https://stork-search.net/docs/install))
+- [search](https://github.com/pelican-plugins/search): generate a [Stork](https://stork-search.net/) search index for the Quick Search feature; requires the `stork` that will be used automatically via Docker Container
 
 ### Markdown extensions
 

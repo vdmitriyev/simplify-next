@@ -50,14 +50,18 @@ tasks:
         platforms: [windows]
 
   search-index:
-    desc: indexes all Markdown/reST files under example/content with Stork (via Docker); the index is then copied into example/output and docs by Pelican itself (it's listed in STATIC_PATHS)
+    desc: builds the Stork search index (via Docker) for example/content
     silent: true
     aliases: [si]
     deps: [check-virtualenv]
+    vars:
+      DOCKER_STORK_DIR: docker/stork
+      SEARCH_CONFIG_SCRIPT: example/generate_search_config.py
+      SEARCH_CONTENT_DIR: example/content
     cmds:
-      - python example/generate_search_config.py
-      - docker build -t simplify-next-stork:1.6.0 -f docker/stork/Dockerfile docker/stork
-      - docker run --rm -v "$(pwd)/example/content":/files simplify-next-stork:1.6.0 build --input config.toml --output search-index.st
+      - python {{.SEARCH_CONFIG_SCRIPT}} {{.SEARCH_CONTENT_DIR}}
+      - docker build -t simplify-next-stork:1.6.0 -f {{.DOCKER_STORK_DIR}}/Dockerfile {{.DOCKER_STORK_DIR}}
+      - docker run --rm -v "$(pwd)/{{.SEARCH_CONTENT_DIR}}":/files simplify-next-stork:1.6.0 build --input config.toml --output search-index.st
 
   clean:
     desc: removes generated build output

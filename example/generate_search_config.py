@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 """Generate a Stork config.toml indexing every Markdown/reST file under content/."""
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -7,9 +8,22 @@ from pathlib import Path
 from pelican.settings import DEFAULT_CONFIG
 from pelican.utils import slugify
 
-CONTENT_DIR = Path(__file__).parent / "content"
+DEFAULT_CONTENT_DIR = Path(__file__).parent / "content"
 ARTICLE_PATHS = {"blog"}
 TITLE_RE = re.compile(r"^(?:Title:\s*|:title:\s*)(.+)$", re.IGNORECASE)
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "content_dir",
+        nargs="?",
+        type=Path,
+        default=DEFAULT_CONTENT_DIR,
+        help="directory to scan for Markdown/reST files and write config.toml "
+        f"into (default: {DEFAULT_CONTENT_DIR})",
+    )
+    return parser.parse_args()
 
 
 def extract_title(path: Path) -> str:
@@ -36,17 +50,20 @@ def toml_escape(value: str) -> str:
 
 
 def main() -> None:
+    args = parse_args()
+    content_dir = args.content_dir
+
     entries = []
-    for path in sorted(CONTENT_DIR.rglob("*")):
+    for path in sorted(content_dir.rglob("*")):
         if path.suffix.lower() not in {".md", ".rst"}:
             continue
-        rel_path = path.relative_to(CONTENT_DIR)
+        rel_path = path.relative_to(content_dir)
         title = extract_title(path)
         url = build_url(rel_path, title)
         entries.append((rel_path.as_posix(), url, title))
 
     if not entries:
-        print("No Markdown/reST files found under content/", file=sys.stderr)
+        print(f"No Markdown/reST files found under {content_dir}", file=sys.stderr)
         sys.exit(1)
 
     lines = ['[input]', 'base_directory = "."', ""]
@@ -59,7 +76,7 @@ def main() -> None:
         lines.append(f'filetype = "{filetype}"')
         lines.append("")
 
-    (CONTENT_DIR / "config.toml").write_text("\n".join(lines), encoding="utf-8")
+    (content_dir / "config.toml").write_text("\n".join(lines), encoding="utf-8")
     print(f"Wrote config.toml with {len(entries)} entries")
 
 

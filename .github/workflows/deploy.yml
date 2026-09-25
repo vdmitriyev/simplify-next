@@ -1,0 +1,39 @@
+name: Deploy Pelican to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Change to your default branch name if different (e.g., master)
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Build Pelican Site into docs/
+        run: |
+          # Run Pelican inside the example directory so PATH='content' and THEME='../' resolve correctly
+          cd example
+          pelican content -o ../docs -s pelicanconf.py
+
+      - name: Deploy to gh-pages Branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages

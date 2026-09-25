@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Categories &ndash; {{ SITENAME }}
+{% endblock title %}
+
+{% block header %}
+    <div class="container">
+        <h3 id="Categories in {{ SITENAME }}" style="color: orange;">Categories in <span style="color: white;">{{ SITENAME }}</span></h3>
+    </div>
+{% endblock header %}
+
+{% block content %}
+
+    <!-- Accordion -->
+    <div id="accordionList" class="accordion shadow">
+        {% for category, articles in categories|sort %}
+            <!-- Accordion items -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_{{ category|lower }}">
+                    <button type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ category|lower }}" aria-expanded="false" aria-controls="collapse{{ category|lower }}" class="accordion-button fw-bold collapsed">
+                        {{ category|lower }} <span class="badge text-bg-warning ms-2" style="font-size: small;">{{ articles|count }}</span>
+                    </button>
+                </h2>
+                <!-- Item list -->
+                <div id="collapse{{ category|lower }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ category|lower }}" data-bs-parent="#accordionList">
+                    <div class="accordion-body bg-body-tertiary">
+                        {% for article in articles %}
+                        <div class="border-bottom py-2">
+                            <a class="m-0" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a><br>
+                            <span class="small">by <a href="{{ SITEURL }}/{{ article.author.url }}" style="color: darkblue;">{{ article.author }}</a>, post on <span class="text-success">{{ article.locale_date }}</span></span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Google Adsense -->
+    {% set adsense_slot = 'page' %}
+    {% include "include/adsense_ad.html" %}
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% if GOOGLE_ADSENSE and GOOGLE_ADSENSE.ads[adsense_slot] %}
+    <!-- ad-{{ adsense_slot }} -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="{{ GOOGLE_ADSENSE.id }}"
+         data-ad-slot="{{ GOOGLE_ADSENSE.ads[adsense_slot] }}"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>
+    (function () {
+        var _load = function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+            document.head.appendChild(s);
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        };
+        {% if GDPR_CONSENT %}
+            window.__gdprPendingLoaders.push(_load);
+            if (window.gdprConsentGiven) { _load(); }
+        {% else %}
+            _load();
+        {% endif %}
+    })();
+    </script>
+{% endif %}

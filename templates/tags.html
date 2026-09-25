@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Tags &ndash; {{ SITENAME }}
+{% endblock title %}
+
+{% block header %}
+    <div class="container">
+        <h3 id="Tags in {{ SITENAME }}" style="color: orange;">Tags in <span style="color: white;">{{ SITENAME }}</span></h3>
+    </div>
+{% endblock header %}
+
+{% block content %}
+
+    <!-- Tags cloud -->
+    <ul class="tagcloud">
+        {% if tag_cloud %}
+            {% for tag in tag_cloud %}
+                <li class="tag-{{ tag.1 }}">
+                    <a href="{{ SITEURL }}/{{ tag.0.url }}">{{ tag.0 }}</a>
+                    {% if TAG_CLOUD_BADGE %}
+                        <sup><span class="badge text-bg-warning">{{ tag.2 }}</span></sup>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    <!-- Accordion -->
+    <div id="accordionList" class="accordion shadow">
+        {% for tag, articles in tags|sort %}
+            <!-- Accordion items -->
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading_{{ tag|lower }}">
+                    <button type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ tag|lower }}" aria-expanded="false" aria-controls="collapse{{ tag|lower }}" class="accordion-button fw-bold collapsed">
+                        {{ tag|lower }} <span class="badge text-bg-warning ms-2" style="font-size: small;">{{ articles|count }}</span>
+                    </button>
+                </h2>
+                <!-- Item list -->
+                <div id="collapse{{ tag|lower }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ tag|lower }}" data-bs-parent="#accordionList">
+                    <div class="accordion-body bg-body-tertiary">
+                        {% for article in articles %}
+                        <div class="border-bottom py-2">
+                            <a class="m-0" href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a><br>
+                            <span class="small">by <a href="{{ SITEURL }}/{{ article.author.url }}" style="color: darkblue;">{{ article.author }}</a>, post on <span class="text-success">{{ article.locale_date }}</span></span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Google Adsense -->
+    {% set adsense_slot = 'page' %}
+    {% include "include/adsense_ad.html" %}
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% if page.lang %}
+    {% block html_lang %}{{ page.lang }}{% endblock html_lang %}
+{% endif %}
+
+{% block title %}
+    {{ page.title }} &ndash; {{ SITENAME }}
+{% endblock title %}
+
+{% block header %}
+    <div class="container">
+        <h3 id="{{ page.title }}" style="color: orange;">{{ page.title }}</h3>
+        {% if page.modified %}
+            <p class="text-light">Last updated: {{ page.locale_modified }}</p>
+        {% else %}
+            <p class="text-light">Post on: {{ page.locale_date }}</p>
+        {% endif %}
+    </div>
+{% endblock header %}
+
+{% block content %}
+    {{ page.content }}
+{% endblock content %}

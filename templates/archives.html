@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Archives &ndash; {{ SITENAME }}
+{% endblock title %}
+
+{% block header %}
+    <div class="container">
+        <h3 id="Archives in {{ SITENAME }}" style="color: orange;">Archives in <span style="color: white;">{{ SITENAME }}</span></h3>
+    </div>
+{% endblock header %}
+
+{% block content %}
+    <input type="text" id="archivesFilter" class="form-control mb-3" placeholder="Filter archives by date, title or tag&hellip;" aria-label="Filter archives">
+
+    <div class="table-responsive">
+        <table id="archivesTable" class="table-borderless">
+            <colgroup>
+                <col style="width: 5%">
+                <col style="width: 20%">
+                <col style="width: 65%">
+                <col style="width: 10%">
+            </colgroup>
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" data-sort="number">#</th>
+                    <th scope="col" data-sort="date">Date</th>
+                    <th scope="col" data-sort="text">Title</th>
+                    <th scope="col" data-sort="text">Tags</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in dates %}
+                <tr>
+                    <td data-value="{{ loop.index }}">{{ loop.index }}</td>
+                    <td data-value="{{ article.date.isoformat() }}">{{ article.locale_date }}</td>
+                    <td data-value="{{ article.title|lower }}"><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></td>
+                    <td data-value="{{ article.tags|join(',')|lower }}" class="border-bottom">
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for tag in article.tags %}
+                                <a class="badge text-bg-info" href="{{ SITEURL }}/{{ tag.url }}">{{ tag|lower }}</a>
+                            {% endfor %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

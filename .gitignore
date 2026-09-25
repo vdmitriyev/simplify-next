@@ -1,0 +1,12 @@
+# custom files
+.env
+CLAUDE.md
+compose-claude.yaml
+
+example/__pycache__
+example/output
+example/content/config.toml
+example/content/search-index.st
+
+.venv/*
+.dvenv/*

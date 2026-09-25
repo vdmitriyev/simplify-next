@@ -1,0 +1,22 @@
+# custom files
+.env
+
+# folders
+.git/*
+.venv/*
+dvenv/*
+temp/*
+data/*
+*-data/*
+data-*/*
+configs/*
+.configs/*
+.jsons/*
+example/__pycache__
+example/output
+
+# extentions
+*.env
+*.csv
+*.txt
+*.json

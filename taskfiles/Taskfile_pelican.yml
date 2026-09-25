@@ -1,0 +1,71 @@
+version: '3'
+
+tasks:
+
+  check-virtualenv:
+    desc: checks Python's virtualenv activation
+    aliases: [cv]
+    silent: true
+    internal: true
+    run: once
+    cmds:
+      - echo "Check existence of a virtual directory-> {{.VENV_DIR}}"
+      - test -d {{.VENV_DIR}}
+      - echo -n "Check if virtual environment is active-> " && python -c "import sys; print('virtualenv is active' if sys.prefix != sys.base_prefix else 'virtualenv is NOT active')"
+      - python -c "import sys; exit(1 if sys.prefix == sys.base_prefix else 0)"
+      - python --version
+      
+  install:
+    desc: creates the virtualenv and installs pelican and dependencies
+    silent: true
+    aliases: [i]    
+    cmds:
+      - cmd: ./install.sh
+        platforms: [linux, darwin]
+      - cmd: install.cmd
+        platforms: [windows]
+
+  build:
+    desc: builds the blog with pelican (dev + publish config)
+    silent: true
+    aliases: [b]
+    dir: example
+    deps: [check-virtualenv, search-index]
+    cmds:
+      - cmd: ./build.sh
+        platforms: [linux, darwin]
+      - cmd: build.cmd
+        platforms: [windows]
+
+  serve:
+    desc: builds and serves the blog locally with autoreload
+    silent: true
+    aliases: [s]
+    dir: example
+    deps: [check-virtualenv, search-index]
+    cmds:
+      - cmd: ./serve.sh
+        platforms: [linux, darwin]
+      - cmd: serve.cmd
+        platforms: [windows]
+
+  search-index:
+    desc: indexes all Markdown/reST files under example/content with Stork (via Docker); the index is then copied into example/output and docs by Pelican itself (it's listed in STATIC_PATHS)
+    silent: true
+    aliases: [si]
+    deps: [check-virtualenv]
+    cmds:
+      - python example/generate_search_config.py
+      - docker build -t simplify-next-stork:1.6.0 -f docker/stork/Dockerfile docker/stork
+      - docker run --rm -v "$(pwd)/example/content":/files simplify-next-stork:1.6.0 build --input config.toml --output search-index.st
+
+  clean:
+    desc: removes generated build output
+    silent: true
+    aliases: [c]
+    deps: [check-virtualenv]
+    cmds:
+      - cmd: rm -rf example/output
+        platforms: [linux, darwin]
+      - cmd: if exist example\output rmdir /s /q example\output
+        platforms: [windows]

@@ -1,0 +1,21 @@
+<script>
+(function () {
+    var _load = function () {
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id={{ GOOGLE_SITE_TAG }}';
+        document.head.appendChild(gtagScript);
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = window.gtag || function () { dataLayer.push(arguments); };
+        gtag('js', new Date());
+        gtag('config', '{{ GOOGLE_SITE_TAG }}');
+    };
+    {% if GDPR_CONSENT %}
+        window.__gdprPendingLoaders.push(_load);
+        if (window.gdprConsentGiven) { _load(); }
+    {% else %}
+        _load();
+    {% endif %}
+})();
+</script>

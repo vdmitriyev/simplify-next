@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Search &ndash; {{ SITENAME }}
+{% endblock title %}
+
+{% block header %}
+    <div class="container">
+        <h3 id="Search in {{ SITENAME }}" style="color: orange;">Search in {{ SITENAME }}</h3>
+    </div>
+{% endblock header %}
+
+{% block content %}
+    <!-- Stork Search -->
+    <input class="form-control mb-3" type="text" data-stork="sitesearch" placeholder="Type here to search">
+    <div data-stork="sitesearch-output"></div>
+
+    <!-- Google Adsense -->
+    {% set adsense_slot = 'page' %}
+    {% include "include/adsense_ad.html" %}
+
+    <!-- Google Search -->
+    {% if GOOGLE_CSE_ID %}
+        <script async src="https://cse.google.com/cse.js?cx=007986648373531383257:hnbvizg2lks"></script>
+        <div class="gcse-search"></div>
+    {% endif %} 
+{% endblock content %}

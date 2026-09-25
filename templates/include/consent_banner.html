@@ -1,0 +1,12 @@
+<div id="gdprConsentBanner" class="d-none position-fixed bottom-0 start-0 end-0 bg-dark text-light p-3 shadow-lg" style="z-index: 1050;">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <p class="mb-0 me-3">
+            This site uses cookies for analytics and other tracking.
+            {% if GDPR_PRIVACY_POLICY_URL %}<a href="{{ SITEURL }}{{ GDPR_PRIVACY_POLICY_URL }}" class="text-light text-decoration-underline">Learn more</a>.{% endif %}
+        </p>
+        <div class="d-flex gap-2">
+            <button type="button" id="gdprConsentReject" class="btn btn-outline-light btn-sm">Reject</button>
+            <button type="button" id="gdprConsentAccept" class="btn btn-light btn-sm">Accept</button>
+        </div>
+    </div>
+</div>

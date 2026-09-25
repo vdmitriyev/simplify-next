@@ -1,0 +1,17 @@
+<script>
+(function () {
+    var _load = function () {
+        var s = document.createElement('script');
+        s.setAttribute('data-ad-client', '{{ GOOGLE_ADSENSE.id }}');
+        s.async = true;
+        s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+        document.head.appendChild(s);
+    };
+    {% if GDPR_CONSENT %}
+        window.__gdprPendingLoaders.push(_load);
+        if (window.gdprConsentGiven) { _load(); }
+    {% else %}
+        _load();
+    {% endif %}
+})();
+</script>

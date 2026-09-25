@@ -51,7 +51,7 @@ def build_url(rel_path: Path, title: str) -> str:
     slug = slugify(title, regex_subs=DEFAULT_CONFIG["SLUG_REGEX_SUBSTITUTIONS"])
     if rel_path.parts[0] in ARTICLE_PATHS:
         return f"blog/{slug}.html"
-    return f"pages/{slug}.html"
+    return f"{slug}.html"
 
 
 def toml_escape(value: str) -> str:

@@ -6,8 +6,8 @@ You can use this theme to host programming articles, journals, or galeries.
 
 ### Live Demo
 
-Source code is at [simplify-next](https://github.com/vdmitriyev/simplify-next)
-The live demo blog with sample articles: <https://vdmitriyev.github.io/simplify-next> 
+- Source code is at: [simplify-next](https://github.com/vdmitriyev/simplify-next)
+- The live demo blog with sample articles: <https://vdmitriyev.github.io/simplify-next> 
 
 N.B.: Demo contains the articles, which is also has some ideas about theme's documents.  
 
@@ -15,7 +15,7 @@ N.B.: Demo contains the articles, which is also has some ideas about theme's doc
 
 - Responsive layout for mobile and desktop (Bootstrap)
 - Quick Search (Stork Search)
-- SEO with contentful metadata, ready for search indexing
+- Some SEO with contentful metadata, ready for search indexing
 - Table of Content sidebar with highlight
 - Back to Top floating button in long article
 - Related posts, next/previous articles
@@ -27,8 +27,8 @@ N.B.: Demo contains the articles, which is also has some ideas about theme's doc
 
 ### Install
 
-Download the theme from [simplify-next](https://github.com/vdmitriyev/simplify-next) or from [pelican-themes](https://github.com/getpelican/pelican-themes).  
-You may need to check the included example `pelicanconf.py` and `publishconf.py` for more information.
+Download the theme from [simplify-next](https://github.com/vdmitriyev/simplify-next).  
+You may need to check the included example `pelicanconf.py` and `publishconf.py` for more information - located in `example` folder.
 
 The example blog used to develop and preview the theme is found in [`example`](example). All runs (install, build, serve, clean, ...) are done with [`task`](https://taskfiles.dev) — run `task` on its own to list the available tasks.
 
@@ -95,7 +95,8 @@ By default Pelican enables below extensions to process your markdown files:
 
 The theme also bring to you a clean, simple, but contenful layout.  
 The following article will guide you how to write content in markdown and how it will be rendered on your page:
-- [Simplify Article](https://vdmitriyev.github.io/simplify-next/blog/simplify-article.html) 
+
+- [`simplify-next` Article](https://vdmitriyev.github.io/simplify-next/blog/simplify-next-theme-article.html) 
 
 ### Preview
 

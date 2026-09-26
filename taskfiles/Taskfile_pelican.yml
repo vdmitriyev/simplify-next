@@ -54,6 +54,7 @@ tasks:
     silent: true
     aliases: [si]
     deps: [check-virtualenv]
+    ignore_error: true
     vars:
       DOCKER_STORK_DIR: docker/stork
       SEARCH_CONFIG_SCRIPT: example/generate_search_config.py

@@ -43,17 +43,29 @@ pelican-plugins
 
 The list of necessary plugins is now in the `requirements.txt` file, and enabled in `PLUGINS` variable in `pelicanconf.py`
 
+### Search 
+
+- To run the search in browser you will need to generate `search-index.st`
+- To generate the file, you will need to have Docker installed
+- For the example in this template, runt the `task` with pre-defined job (in the root of the repository)
+    ```
+    task py:search-index
+    ```
+
 ### Integrations
 
-- [Disqus](https://disqus.com/): add comments support
 - [Google AdSense](https://www.google.com.br/adsense/start/): show ads
 - [Google Analytics](https://www.google.com/analytics/web/): track your site
 - [Google Tag Manager](https://www.google.com/tagmanager/): new version to track your site
 - [Matomo](https://matomo.org): another site tracking service
+- [Disqus](https://disqus.com/): add comments support
 
 ### Extra
 
 - GDPR cookie-consent banner: gate analytics/ads/comments trackers behind visitor opt-in
+- Copy the file `privacy-policy.md` from `example/content/pages` and change it to your needs
+- Enable the usage in the pelican config file
+
 
 ### Plugins Support
 
